@@ -6,8 +6,8 @@ $nomeLivro = "";
 $autorLivro = "";
 $numPaginas = 0;
 $generoLivro = "";
-$exemplarUnico = "Não";
 $sinopseLivro = "";
+$exemplarUnico = "Não";
 $indiceLivro = 0;
 
 // recupera o índice
@@ -33,7 +33,6 @@ $nomeLivro = $livros[$indiceLivro]["NomeLivro"];
 $autorLivro = $livros[$indiceLivro]["AutorLivro"];
 $numPaginas = $livros[$indiceLivro]["NumPaginas"];
 $generoLivro = $livros[$indiceLivro]["GeneroLivro"];
-$exemplarUnico = $livros[$indiceLivro]["ExemplarUnico"];
 $sinopseLivro = $livros[$indiceLivro]["SinopseLivro"];
 
 ?>
@@ -55,21 +54,17 @@ $sinopseLivro = $livros[$indiceLivro]["SinopseLivro"];
             font-size: 50px;
             font-style: italic;
         }   
-        textarea, input[type=text], input[type=submit], input[type=number], select {
+        textarea, input, select {
             padding: 15px 25px 15px 25px;
-            border-radius: 20px;
             margin-top: 10px;
             font-weight: 700; 
         }
-        input[type=text], input[type=number], input[type=submit], select {
+        input, select {
             width: 500px;
-        }
-        input[type=radio] {
-            width: 50px;
         }
         textarea {
             width: 450px;
-            height: 90px;
+            height: 250px;
         }
         div.textarea {
             float: right;
@@ -93,10 +88,12 @@ $sinopseLivro = $livros[$indiceLivro]["SinopseLivro"];
 <body>
     <form name="inserirLivro" action="processar.php" method="GET">
     <fieldset>
-            <legend>Alterar livro</legend>
+            <legend>Excluir livro</legend>
             
-            <!-- 4 IMPUTS -->
             <div class="inputs">
+                <p>
+                    Indice <br><input type="text" name="indice" readonly value="<?php echo $indiceLivro  ?>">
+                </p>
                 <p>
                     Código <br><input type="text" name="txtCodLivro" value="<?php  echo $codLivro  ?>">
                 </p>
@@ -109,10 +106,8 @@ $sinopseLivro = $livros[$indiceLivro]["SinopseLivro"];
                 <p>
                     Número de páginas <br><input type="number" name="numPaginas" value="<?php  echo $numPaginas  ?>">
                 </p>
-                
             </div>
             
-            <!-- TEXTAREA -->
             <div class = "textarea">
                 <p>
                     <!-- SELECT GENÊRO LIVRO -->
@@ -125,22 +120,11 @@ $sinopseLivro = $livros[$indiceLivro]["SinopseLivro"];
                     <option>Terror</option>
                     </select>
                 </p>
-
                 <label for = "txtSinopse">Sinopse</label><br>
-                <textarea name="txtSinopse"><?php  echo $sinopseLivro  ?></textarea><br><br>
-
-                <label name="exemplarUnico">Exemplar único</label>
-                <?php if ($exemplarUnico == "Não") {
-                    echo '<input type="radio" name="rdoExemplarUnico" value="Não" checked="checked"> Não';
-                    echo '<input type="radio" name="rdoExemplarUnico" value="Sim"> Sim ';
-                } else {
-                    echo '<input type="radio" name="rdoExemplarUnico" value="Não" > Não';
-                    echo '<input type="radio" name="rdoExemplarUnico" value="Sim" checked="checked"> Sim ';
-                }
-                ?>
-
+                <textarea name="txtSinopse"><?php  echo $sinopseLivro  ?></textarea>
+                <h2>Deseja realmente excluir os dados?</h2>
                 <p>
-                    <input type="submit" class="botao" name="btnOperacao" value="Alterar" />
+                    <input type="submit" class="botao" name="btnOperacao" value="Excluir" />
                     <input type="submit" class="botao" name="btnOperacao" value="Cancelar" />
                 </p>
             </div>

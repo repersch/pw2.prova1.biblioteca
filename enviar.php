@@ -2,20 +2,12 @@
 
 $livros = [];
 
-$arquivoLivros = "D:\ADS\ProgramaçãoWeb2\projetos\Prova\arquivo\Livros.JSON";
+$arquivoLivros = "D:\ADS\ProgramaçãoWeb2\projetos\Prova1\Prova\arquivo\Livros.JSON";
 
-// verifica se o arquivo existe e o converte em array
 if (file_exists($arquivoLivros)) {
     $livrosJSON = file_get_contents($arquivoLivros);
     $livros = json_decode($livrosJSON, true);
 }
-// print_r($livros);
-
-// foreach ($livros as $livroIndice => $livro) {
-//         echo "Índice: " . $livroIndice . "<br>" ;
-//         echo "Código Livro: " . $livro['CodLivro'] . "<br>" ;
-//         echo "Nome: " . $livro['NomeLivro'] . "<br><br>" ; 
-// }
 
 ?>
 
@@ -25,7 +17,7 @@ if (file_exists($arquivoLivros)) {
 <head>
     <meta charset="UTF-8">
     <title>Biblioteca</title>
-    <link href="css/estiloBiblioteca.css" rel="stylesheet" type="text/css"/> 
+    <link href="css/estiloBiblioteca.css" rel="stylesheet" type="text/css"> 
     <style>
         body {
             background-color: #81ecda;
@@ -36,26 +28,25 @@ if (file_exists($arquivoLivros)) {
             font-size: 50px;
             font-style: italic;
         }   
-        /* fieldset {
-            display: inline-flexbox; 
-            justify-content: space-between;
-        }  */
-        textarea, input, select {
+        textarea, input[type=text], input[type=submit], input[type=number], select {
             padding: 15px 25px 15px 25px;
-            /* border-radius: 20px; */
+            border-radius: 20px;
             margin-top: 10px;
             font-weight: 700; 
         }
-        input, select {
+        input[type=text], input[type=number], input[type=submit], select {
             width: 500px;
+        }
+        input[type=radio] {
+            width: 50px;
         }
         textarea {
             width: 450px;
-            height: 150px;
+            height: 90px;
         }
         div.textarea {
             float: right;
-            padding: 2.5%;
+            padding: 2%;
             margin-right: 30px;
         }
         div.inputs {
@@ -105,20 +96,28 @@ if (file_exists($arquivoLivros)) {
 
             </div>
             
-            <!-- TEXTAREA -->
-            <div class = "textarea">
+            <div class="textarea">
+                <br>
                 <p>
                     <!-- SELECT GENÊRO LIVRO -->
                     <select name="generoLivro"><option selected = "true" disabled>Gênero</option>
-                        <option>Ficção</option>
-                        <option>Bibliografia</option>
-                        <option>Técnico</option>
-                        <option>Romance</option>
-                        <option>Terror</option>
-                    </select>
+                    <option>Ficção</option>
+                    <option>Bibliografia</option>
+                    <option>Técnico</option>
+                    <option>Romance</option>
+                    <option>Terror</option>
+                </select>
                 </p>
+                
+                <!-- TEXTAREA -->
                 <label for = "txtSinopse">Sinopse</label><br>
-                <textarea name="txtSinopse"></textarea>
+                <textarea name="txtSinopse"></textarea><br><br>
+
+                <!-- RADIO BUTTON -->
+                <label name="exemplarUnico">Exemplar único</label>
+                <input type="radio" name="rdoExemplarUnico" value="Não" checked="checked"> Não
+                <input type="radio" name="rdoExemplarUnico" value="Sim"> Sim 
+
                 <p>
                     <input type="submit" name="btnOperacao" value="Inserir" />
                 </p>
@@ -137,7 +136,8 @@ if (file_exists($arquivoLivros)) {
                     <th>Nome</th>
                     <th>Autor</th> 
                     <th>Páginas</th>  
-                    <th>Gênero</th>                 
+                    <th>Gênero</th> 
+                    <th>Único</th>                
                     <th>Sinopse</th>                 
                     <th>Alterar</th>                 
                     <th>Excluir</th>                 
@@ -145,14 +145,15 @@ if (file_exists($arquivoLivros)) {
                 <?php  foreach($livros as $indiceLivro => $livro) {  ?>
                 <tr>
                     <td><?php echo $indiceLivro; ?></td>
-                    <td><?php echo $livro["CodLivro"];    ?></td>
-                    <td><?php echo $livro["NomeLivro"];   ?></td>
-                    <td><?php echo $livro["AutorLivro"];  ?></td>
-                    <td><?php echo $livro["NumPaginas"];  ?></td>
-                    <td><?php echo $livro["GeneroLivro"]; ?></td>
-                    <td><?php echo $livro["SinopseLivro"]; ?></td>
-                    <td><a href='alterar.php?Indice=<?php  echo $indiceLivro; ?>'> <img src="Imagens/Editar.png" width="13px" height="13px">  </a>  </td>
-                    <td><a href='71-JSON-Excluir.php?Indice=<?php  echo $indiceLivro; ?>'> <img src="Imagens/Excluir.png" width="13px" height="13px"> </a>  </td>
+                    <td><?php echo $livro["CodLivro"];      ?></td>
+                    <td><?php echo $livro["NomeLivro"];     ?></td>
+                    <td><?php echo $livro["AutorLivro"];    ?></td>
+                    <td><?php echo $livro["NumPaginas"];    ?></td>
+                    <td><?php echo $livro["GeneroLivro"];   ?></td>
+                    <td><?php echo $livro["ExemplarUnico"]; ?></td>
+                    <td><?php echo $livro["SinopseLivro"];  ?></td>
+                    <td><a href='alterar.php?Indice=<?php  echo $indiceLivro; ?>'> <img src="Imagens/Editar.png" width="20px" height="20px">  </a>  </td>
+                    <td><a href='excluir.php?Indice=<?php  echo $indiceLivro; ?>'> <img src="Imagens/Excluir.png" width="20px" height="20px"> </a>  </td>
                 </tr>  
                 <?php    }    ?>
             </table>

@@ -6,42 +6,46 @@ h1 {
     text-align: center;
     font-size: 50px;
     font-style: italic;
-}
-fieldset {
-    display: inline-flexbox; 
-    justify-content: space-between;
-} 
-textarea, input, select {
+}   
+textarea, input[type=text], input[type=submit], input[type=number], select {
     padding: 15px 25px 15px 25px;
     border-radius: 20px;
     margin-top: 10px;
     font-weight: 700; 
 }
-input, select {
+input[type=text], select {
     width: 500px;
 }
+input[type=radio] {
+    width: 50px;
+}
 textarea {
-    width: 500px;
-    height: 100px;
+    width: 450px;
+    height: 90px;
 }
 div.textarea {
     float: right;
-    padding: 2.5%;
+    padding: 2%;
+    margin-right: 30px;
 }
 div.inputs {
     float: left;
     padding: 2%;
+    margin-left: 30px;
 }
 legend {
     font-size: 25px;
 }
 table {
-    width: 500px;
+    width: auto;
     border-collapse: collapse;
     text-align: center;
     border-radius: 20px;
 }
+div.tableInfo {
+    padding: 2%;
+}
 table, td, th {
     border: 1px solid black;
-    border-radius: 20px;
+    padding: 15px 25px 15px 25px;  
 }  

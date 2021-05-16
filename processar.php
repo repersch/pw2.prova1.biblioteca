@@ -8,6 +8,29 @@ $numPaginas = 0;
 $generoLivro = "";
 $sinopseLivro = "";
 $indiceLivro = 0;
+$exemplarUnico = "";
+
+function gravarDadosNoArquivo($arquivo, $dados) {
+
+    // converte o array pra json
+    $livrosJSON = json_encode($dados);
+        
+    // sobrescreve os dados do arquivo
+    file_put_contents($arquivo, $livrosJSON);
+
+}
+
+
+function obterDadosDoArquivo($arquivo) {
+
+    // Obtem os dados do arquivo 
+    $livrosJSON = file_get_contents($arquivo);
+        
+    // Converte de Json para Array
+    return json_decode($livrosJSON, true );
+
+}
+
 
 //-----------------------------------------------------------
 //                   RECUPERA OS DADOS
@@ -43,9 +66,9 @@ if(isset($_GET["numPaginas"])) {
     }
 }
 
-if(isset($_GET["numPaginas"])) {
-    if (!empty($_GET["numPaginas"])) {
-        $generoLivro = $_GET["numPaginas"];
+if(isset($_GET["generoLivro"])) {
+    if (!empty($_GET["generoLivro"])) {
+        $generoLivro = $_GET["generoLivro"];
     }
 }
 
@@ -54,6 +77,12 @@ if(isset($_GET["txtSinopse"])) {
         $sinopseLivro = $_GET["txtSinopse"];
     }
 }
+
+if (isset($_REQUEST["rdoExemplarUnico"])) {
+    $exemplarUnico = $_REQUEST['rdoExemplarUnico'];
+    echo $exemplarUnico;
+}
+
 
 if(isset($_GET["indice"])) {
     if (!empty($_GET["indice"])) {
@@ -112,38 +141,79 @@ if (empty($sinopseLivro)) {
 //                   PROCESSAR OS DADOS
 //-----------------------------------------------------------
 
-$arquivoLivros = "D:\ADS\ProgramaçãoWeb2\projetos\Prova\arquivo\Livros.JSON";
+$arquivoLivros = "D:\ADS\ProgramaçãoWeb2\projetos\Prova1\Prova\arquivo\Livros.JSON";
 
 switch ($operacao) {
+
     case "Inserir":
 
         // verifica se o arquivo existe e o converte em array
         if (file_exists($arquivoLivros)) {
-            $livrosJSON = file_get_contents($arquivoLivros);
-            $livros = json_decode($livrosJSON, true);
+            $livros = obterDadosDoArquivo($arquivoLivros);
         }
         
         // insere os dados do livro no final do array
-        $livros[] = ["CodLivro" => $codLivro, "NomeLivro" => $nomeLivro, "AutorLivro" => $autorLivro, 
-                    "NumPaginas" => $numPaginas, "GeneroLivro" => $generoLivro, "SinopseLivro" => $sinopseLivro];
+        $livros[] = ["CodLivro" => $codLivro, 
+                    "NomeLivro" => $nomeLivro, 
+                    "AutorLivro" => $autorLivro, 
+                    "NumPaginas" => $numPaginas, 
+                    "GeneroLivro" => $generoLivro, 
+                    "ExemplarUnico" => $exemplarUnico, 
+                    "SinopseLivro" => $sinopseLivro];
         
-        // converte o array pra json
-        $livrosJSON = json_encode($livros);
-        
-        // sobrescreve os dados do arquivo
-        file_put_contents($arquivoLivros, $livrosJSON);
+        gravarDadosNoArquivo($arquivoLivros, $livros);
         
         header("Location: enviar.php");
         die();
-    
+
+    case "Alterar":
+
+        // Verifica se o arquivo existe
+        if (file_exists($arquivoLivros)) { 
+            $livros = obterDadosDoArquivo($arquivoLivros);
+        } else {
+            die("O arquivo $arquivoLivros não existe");
+        }
+
+        $livros[$indiceLivro]["CodLivro"] = $codLivro;
+        $livros[$indiceLivro]["NomeLivro"] = $nomeLivro;
+        $livros[$indiceLivro]["AutorLivro"] = $autorLivro;
+        $livros[$indiceLivro]["NumPaginas"] = $numPaginas;
+        $livros[$indiceLivro]["GeneroLivro"] = $generoLivro;
+        $livros[$indiceLivro]["rdoExemplarUnico"] = $exemplarUnico;
+        $livros[$indiceLivro]["SinopseLivro"] = $sinopseLivro;
+
+        gravarDadosNoArquivo($arquivoLivros, $livros);
+
+        header("Location: enviar.php");
+        die();
+
+    case "Excluir":
+
+        if (file_exists($arquivoLivros)) {
+            $livros = obterDadosDoArquivo($arquivoLivros);
+        } else {
+            die("O arquivo $arquivoLivros não existe");
+        }
+
+        unset($livros[$indiceLivro]);
+
+        gravarDadosNoArquivo($arquivoLivros, $livros);
+
+        header("Location: enviar.php");
+        die();
+
+    case "Cancelar":
+
+        header("Location: enviar.php");
+        die();
+
+    default:
+
+        echo "<h2>Operação não cadastrada.</h2>";
+        echo "<p><a href='enviar.php'>Clique aqui para voltar</a></p>";
+        die();
+
 }
-
-
-
-
-
-
-
-
 
 ?>
